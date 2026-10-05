@@ -1,0 +1,79 @@
+Practical 3: SOAP web service - Request-Response (Factorial)
+
+==================== FactorialService.java (package ty) ====================
+package ty;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+
+@WebService(serviceName = "FactorialService")
+public class FactorialService {
+
+
+    @WebMethod(operationName = "fact")
+    public int fact(@WebParam(name = "n") int n) {
+        int f = 1;
+        for (int i = 1; i <= n; i++) {
+            f = f * i;
+        }
+        return f;
+    }
+}
+
+==================== form.jsp ====================
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Factorial Result</title>
+    </head>
+    <body>
+<h2>Factorial </h2>
+    <form action="action.jsp" method="get">
+    Enter number:
+    <input type="text" name="num">
+    <input type="submit" value="Calculate">
+</form>
+</body>
+</html>
+
+==================== action.jsp ====================
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factorial Result</title>
+</head>
+<body>
+
+<h2>Factorial Result</h2>
+
+<%
+try {
+    tyclient.FactorialService_Service service =
+            new tyclient.FactorialService_Service();
+
+    tyclient.FactorialService port =
+            service.getFactorialServicePort();
+
+    String value = request.getParameter("num");
+
+    if (value == null || value.trim().equals("")) {
+        out.println("Please enter a number.");
+    } else {
+        int num = Integer.parseInt(value);
+
+        int result = port.fact(num);
+
+        out.println("Factorial = " + result);
+    }
+
+} catch (Exception ex) {
+    out.println("Error: " + ex);
+}
+%>
+
+</body>
+</html>

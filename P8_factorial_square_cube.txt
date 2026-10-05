@@ -1,0 +1,58 @@
+Aim: Different Platform (Python/java), make 3 functions (Factorial, Cube, Square).
+
+==================== WSPGM.java (package TYCS) ====================
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package TYCS;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+
+/**
+ *
+ * @author Administrator
+ */
+@WebService(serviceName = "WSPGM")
+public class WSPGM {
+
+    /**
+     * This is a sample web service operation
+     */
+    @WebMethod(operationName = "hello")
+    public String hello(@WebParam(name = "name") String text) {
+        return "hello " + text + "!";
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "fact")
+    public String fact(@WebParam(name = "a") int a) {
+        int result = 1;
+        for (int i = 1; i <= a; i++) {
+            result = result * i;
+        }
+        return "Factorial of number " + a + " is " + result;
+    }
+
+    /**
+    * Web service operation
+    */
+    @WebMethod(operationName = "square")
+    public float square(@WebParam(name = "n") float n) {
+        return n * n;
+    }
+
+    /**
+    * Web service operation
+    */
+    @WebMethod(operationName = "cube")
+    public float cube(@WebParam(name = "n") float n) {
+        float result = (float) java.lang.Math.pow(n, 3);
+        return result;
+    }
+}

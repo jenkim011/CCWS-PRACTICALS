@@ -1,0 +1,130 @@
+Practical 4: SOAP web service - Basic Calculator (add, subtract, multiply, divide)
+
+==================== Cal.java (package tycs) ====================
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package tycs;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+
+/**
+ *
+ * @author Administrator
+ */
+@WebService(serviceName = "Cal")
+public class Cal {
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "add")
+    public String add(@WebParam(name = "a") double a, @WebParam(name = "b") double b) {
+        //TODO write your implementation code here:
+        return "Addition: "+(a+b);
+    }
+
+    @WebMethod(operationName = "sub")
+    public String sub(@WebParam(name = "a") double a, @WebParam(name = "b") double b) {
+        //TODO write your implementation code here:
+        return "Subtraction: "+(a-b);
+    }
+
+    @WebMethod(operationName = "mul")
+    public String mul(@WebParam(name = "a") double a, @WebParam(name = "b") double b) {
+        //TODO write your implementation code here:
+        return "Multiplication: "+(a*b);
+    }
+
+    @WebMethod(operationName = "div")
+    public String div(@WebParam(name = "a") double a, @WebParam(name = "b") double b) {
+        //TODO write your implementation code here:
+        return "Division: "+(a/b);
+    }
+
+}
+
+==================== input.jsp ====================
+<%--
+    Document   : input
+    Created on : 8 Aug, 2026, 11:19:26 AM
+    Author     : Administrator
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Calculator</title>
+    </head>
+    <body>
+        <h2>Web Service Calculator</h2>
+        <hr><form action="op.jsp" method="get">
+            <p>
+                First Number: <br>
+                <input type="text" name="t1">
+            </p>
+
+            <p>
+                Second Number: <br>
+                <input type="text" name="t2">
+            </p>
+
+            <p>
+                Select Operation: <br> <br>
+                <input type="submit" name="op" value="add">
+                <input type="submit" name="op" value="sub">
+                <input type="submit" name="op" value="mul">
+                <input type="submit" name="op" value="div">
+            </p>
+
+            <hr><input type="reset" value="Clear Feilds">
+        </body>
+</html>
+
+==================== op.jsp ====================
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator Result</title>
+</head>
+
+<body>
+
+<h1>Calculator Result</h1>
+
+<%
+    double a = Double.parseDouble(request.getParameter("t1"));
+    double b = Double.parseDouble(request.getParameter("t2"));
+    String op = request.getParameter("op");
+
+    tyc.Cal_Service service = new tyc.Cal_Service();
+    tyc.Cal port = service.getCalPort();
+
+    String result = "";
+
+    if (op.equals("add")) {
+        result = port.add(a, b);
+    }
+    else if (op.equals("sub")) {
+        result = port.sub(a, b);
+    }
+    else if (op.equals("mul")) {
+        result = port.mul(a, b);
+    }
+    else if (op.equals("div")) {
+        result = port.div(a, b);
+    }
+
+    out.println("<h2>Result = " + result + "</h2>");
+%>
+
+</body>
+</html>
